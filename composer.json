@@ -17,25 +17,29 @@
     "homepage": "https://github.com/jrmajor/token-dumper",
     "require": {
         "php": "7.4 - 8.2",
-        "azjezz/psl": "^1.6"
+        "azjezz/psl": "^1.6",
+        "symfony/console": "^5.4"
     },
     "require-dev": {
-        "php-standard-library/psalm-plugin": "^1.1",
-        "psalm/plugin-phpunit": "^0.17.0",
-        "vimeo/psalm": "^4.27",
         "jrmajor/cs": "^0.4.5",
-        "phpunit/phpunit": "^9.5"
+        "php-standard-library/psalm-plugin": "^1.1",
+        "phpunit/phpunit": "^9.5",
+        "psalm/plugin-phpunit": "^0.17.0",
+        "vimeo/psalm": "^4.27"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Major\\TokenDumper\\": "src"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Major\\TokenDumper\\Tests\\": "tests"
+            "Tests\\": "tests"
         }
     }
 }
