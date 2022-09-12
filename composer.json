@@ -1,0 +1,39 @@
+{
+    "name": "jrmajor/token-dumper",
+    "description": "Inspect how PHP code is tokenized",
+    "license": "MIT",
+    "keywords": [
+        "dev",
+        "tokenizer",
+        "tokens",
+        "dump"
+    ],
+    "authors": [
+        {
+            "name": "Jeremiasz Major",
+            "email": "jrh.mjr@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/jrmajor/token-dumper",
+    "require": {
+        "php": "7.4 - 8.2",
+    },
+    "require-dev": {
+        "psalm/plugin-phpunit": "^0.17.0",
+        "vimeo/psalm": "^4.27",
+        "jrmajor/cs": "^0.4.5",
+        "phpunit/phpunit": "^9.5"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Major\\TokenDumper\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Major\\TokenDumper\\Tests\\": "tests"
+        }
+    }
+}
