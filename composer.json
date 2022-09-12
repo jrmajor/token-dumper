@@ -17,8 +17,10 @@
     "homepage": "https://github.com/jrmajor/token-dumper",
     "require": {
         "php": "7.4 - 8.2",
+        "azjezz/psl": "^1.6"
     },
     "require-dev": {
+        "php-standard-library/psalm-plugin": "^1.1",
         "psalm/plugin-phpunit": "^0.17.0",
         "vimeo/psalm": "^4.27",
         "jrmajor/cs": "^0.4.5",
