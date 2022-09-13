@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Major\TokenDumper;
 
 use Major\TokenDumper\Tokenizer as T;
+use Psl\Str;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableStyle;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,7 +49,14 @@ final class Dumper
 
     private function contentCell(T\Token $token): string
     {
-        return $token->getContent();
+        $content = OutputFormatter::escape($token->getContent());
+
+        return Str\replace_every($content, [
+            "\t" => '<ws>⇥</ws>',
+            "\n" => '<ws>␊</ws>',
+            "\r" => '<ws>␍</ws>',
+            ' ' => '<ws>␣</ws>',
+        ]);
     }
 
     private function setStyle(Table $table): void
