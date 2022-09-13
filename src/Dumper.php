@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Major\TokenDumper;
 
+use Major\TokenDumper\Console\Table;
 use Major\TokenDumper\Tokenizer as T;
 use Psl\Str;
 use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class Dumper
@@ -32,7 +31,6 @@ final class Dumper
         $tokens = $this->tokenizer->tokenize($source);
 
         $table = new Table($this->out);
-        $this->setStyle($table);
 
         foreach ($tokens as $i => $token) {
             $table->addRow([
@@ -86,14 +84,5 @@ final class Dumper
             "\r" => '<ws>␍</>',
             ' ' => '<ws>␣</>',
         ]);
-    }
-
-    private function setStyle(Table $table): void
-    {
-        $style = (new TableStyle())
-            ->setHorizontalBorderChars('')
-            ->setDefaultCrossingChar('');
-
-        $table->setStyle($style);
     }
 }

@@ -15,6 +15,7 @@ final class OutputFormatter extends BaseFormatter
             'ws' => new Style('yellow'),
             'native-token' => new Style('green'),
             'custom-token' => new Style('blue'),
+            'gray' => new Style('gray'),
         ]);
     }
 }
