@@ -64,4 +64,39 @@ final class DumperTest extends TestCase
 
         self::assertSame("{$expected}\n", $this->out->fetch());
     }
+
+    public function testCustomTokens(): void
+    {
+        $this->dumper->dump('<?php use const PI; fn (): ?array => null;');
+
+        $expected = <<<'OUT'
+            | 0  | T_OPEN_TAG             | <?php␣ |
+            | 1  | T_USE                  | use    |
+            | 2  | T_WHITESPACE           | ␣      |
+            | 3  | T_CONST                | const  |
+            |    |   CT::T_CONST_IMPORT   |        |
+            | 4  | T_WHITESPACE           | ␣      |
+            | 5  | T_STRING               | PI     |
+            | 6  |                        | ;      |
+            | 7  | T_WHITESPACE           | ␣      |
+            | 8  | T_FN                   | fn     |
+            | 9  | T_WHITESPACE           | ␣      |
+            | 10 |                        | (      |
+            | 11 |                        | )      |
+            | 12 | null                   | :      |
+            |    |   CT::T_TYPE_COLON     |        |
+            | 13 | T_WHITESPACE           | ␣      |
+            | 14 | null                   | ?      |
+            |    |   CT::T_NULLABLE_TYPE  |        |
+            | 15 | T_ARRAY                | array  |
+            |    |   CT::T_ARRAY_TYPEHINT |        |
+            | 16 | T_WHITESPACE           | ␣      |
+            | 17 | T_DOUBLE_ARROW         | =>     |
+            | 18 | T_WHITESPACE           | ␣      |
+            | 19 | T_STRING               | null   |
+            | 20 |                        | ;      |
+            OUT;
+
+        self::assertSame("{$expected}\n", $this->out->fetch());
+    }
 }

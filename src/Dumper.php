@@ -13,13 +13,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class Dumper
 {
-    private T\Tokenizer $tokenizer;
+    private T\AggregateTokenizer $tokenizer;
 
     private OutputInterface $out;
 
     public function __construct(OutputInterface $out)
     {
-        $this->tokenizer = new T\NativeTokenizer();
+        $this->tokenizer = new T\AggregateTokenizer([
+            new T\NativeTokenizer(),
+            new T\PhpCsFixerTokenizer(),
+        ]);
 
         $this->out = $out;
     }
@@ -42,12 +45,35 @@ final class Dumper
         $table->render();
     }
 
-    private function nameCell(T\Token $token): string
+    private function nameCell(T\AggregateToken $token): string
     {
-        return $token->getName() ?? '';
+        [$native, $fixer] = $token->getNames();
+
+        $name = [];
+
+        if ($native !== null || $native !== $fixer) {
+            $name[] = $this->formatName($native ?? 'null');
+        }
+
+        if ($native !== $fixer) {
+            $name[] = '  ' . $this->formatName($fixer ?? 'null');
+        }
+
+        return Str\join($name, "\n");
     }
 
-    private function contentCell(T\Token $token): string
+    private function formatName(string $name): string
+    {
+        if (! Str\contains($name, '::')) {
+            return "<token>{$name}</>";
+        }
+
+        [$ns, $name] = Str\split($name, '::', 2);
+
+        return "<token>{$ns}</>::<token>{$name}</>";
+    }
+
+    private function contentCell(T\AggregateToken $token): string
     {
         $content = OutputFormatter::escape($token->getContent());
 
