@@ -7,6 +7,7 @@ namespace Tests;
 use Major\TokenDumper\Console\OutputFormatter;
 use Major\TokenDumper\Dumper;
 use PHPUnit\Framework\TestCase;
+use Psl\Str;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 final class DumperTest extends TestCase
@@ -98,5 +99,29 @@ final class DumperTest extends TestCase
             OUT;
 
         self::assertSame("{$expected}\n", $this->out->fetch());
+    }
+
+    public function testColors(): void
+    {
+        $decoratedOut = new BufferedOutput(null, true, new OutputFormatter());
+        $decoratedDumper = new Dumper($decoratedOut);
+
+        $decoratedDumper->dump('<?php use const PI;');
+
+        $expected = <<<OUT
+            | 0 | \e[32mT_OPEN_TAG\e[39m           | <?php\e[33m␣\e[39m |
+            | 1 | \e[32mT_USE\e[39m                | use    |
+            | 2 | \e[32mT_WHITESPACE\e[39m         | \e[33m␣\e[39m      |
+            | 3 | \e[32mT_CONST\e[39m              | const  |
+            |   |   \e[34mCT\e[39m::\e[34mT_CONST_IMPORT\e[39m |        |
+            | 4 | \e[32mT_WHITESPACE\e[39m         | \e[33m␣\e[39m      |
+            | 5 | \e[32mT_STRING\e[39m             | PI     |
+            | 6 |                      | ;      |
+            OUT;
+
+        self::assertSame(
+            Str\replace("{$expected}\n", "\e", '\\e'),
+            Str\replace($decoratedOut->fetch(), "\e", '\\e'),
+        );
     }
 }

@@ -56,21 +56,24 @@ final class Dumper
         }
 
         if ($native !== $fixer) {
-            $name[] = '  ' . $this->formatName($fixer ?? 'null');
+            $name[] = '  ' . $this->formatName($fixer ?? 'null', 'custom');
         }
 
         return Str\join($name, "\n");
     }
 
-    private function formatName(string $name): string
+    /**
+     * @param 'native'|'custom' $format
+     */
+    private function formatName(string $name, string $format = 'native'): string
     {
         if (! Str\contains($name, '::')) {
-            return "<token>{$name}</>";
+            return "<{$format}-token>{$name}</>";
         }
 
         [$ns, $name] = Str\split($name, '::', 2);
 
-        return "<token>{$ns}</>::<token>{$name}</>";
+        return "<{$format}-token>{$ns}</>::<{$format}-token>{$name}</>";
     }
 
     private function contentCell(T\AggregateToken $token): string
@@ -78,10 +81,10 @@ final class Dumper
         $content = OutputFormatter::escape($token->getContent());
 
         return Str\replace_every($content, [
-            "\t" => '<ws>⇥</ws>',
-            "\n" => '<ws>␊</ws>',
-            "\r" => '<ws>␍</ws>',
-            ' ' => '<ws>␣</ws>',
+            "\t" => '<ws>⇥</>',
+            "\n" => '<ws>␊</>',
+            "\r" => '<ws>␍</>',
+            ' ' => '<ws>␣</>',
         ]);
     }
 

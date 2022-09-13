@@ -13,7 +13,8 @@ final class OutputFormatter extends BaseFormatter
     {
         parent::__construct(false, [
             'ws' => new Style('yellow'),
-            'token' => new Style('green'),
+            'native-token' => new Style('green'),
+            'custom-token' => new Style('blue'),
         ]);
     }
 }
